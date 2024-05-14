@@ -31,5 +31,13 @@ namespace FiboAlg
             }
             return f3;
         }
+
+        public int FibonacciF(int a)
+        {
+            double sqrt = Math.Sqrt(5);
+            double cst = (1 + sqrt) / 2;
+            double result = (Math.Pow(cst, a) / sqrt) + 0.5;
+            return Convert.ToInt32(Math.Round(result, 0, MidpointRounding.ToZero));
+        }
     }
 }
