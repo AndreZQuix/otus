@@ -1,14 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using Testing;
 
-namespace _4.AAlgorithms
+namespace PrimeNumbersAlg
 {
-    public class PrimeNumbers
+    public class PrimeNumbers : ITask
     {
-        public static bool IsPrime(int n)
+        public string Run(string[] data)
+        {
+            int a = Convert.ToInt32(data[0]);
+            int res = PrimeNumbersCount(a);
+            return res.ToString();
+        }
+
+        public bool IsPrime(int n)
         {
             if(n == 2 || n == 3) return true;
             if(n % 2 == 0 || n % 3 == 0) return false;
@@ -20,7 +29,7 @@ namespace _4.AAlgorithms
             return true;
         }
 
-        public static int PrimeNumbersCount(int amount)
+        public int PrimeNumbersCount(int amount)
         {
             int count = 0;
             for(int i = 2; i <= amount; i++)

@@ -1,4 +1,5 @@
-﻿using Testing;
+﻿using System.Globalization;
+using Testing;
 
 namespace PowerAlg
 {
@@ -6,13 +7,16 @@ namespace PowerAlg
     {
         public string Run(string[] data)
         {
-            double a = Convert.ToInt32(data[0]);
-            double p = Convert.ToInt32(data[1]);
+            double a = Double.Parse(data[0], CultureInfo.InvariantCulture);
+            double p = Double.Parse(data[1], CultureInfo.InvariantCulture);
             double res = Power(a, p);
-            return res.ToString();
+            double result = Math.Round(res, MidpointRounding.AwayFromZero);
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+            return result.ToString(nfi);
         }
 
-        public static double Power(double a, double p)
+        public double Power(double a, double p)
         {
             if (p == 0) return 1.0;
             if (p == 1) return a;
