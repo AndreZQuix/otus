@@ -48,6 +48,11 @@ namespace _4.AAlgorithms
             return Width == matrix.Height;
         }
 
+        public static Matrix operator*(Matrix m1, Matrix m2)
+        {
+            return m1.Multiply(m2);
+        }
+
         public Matrix Multiply(Matrix matrix)
         {
             if(!IsMultiplyPossible(matrix))
@@ -68,6 +73,18 @@ namespace _4.AAlgorithms
                 }
             }
             return result;
+        }
+
+        public Matrix Power(int power)
+        {
+            if (power == 1) return this;
+            Matrix result = this;
+            if (power % 2 == 0)
+            {
+                Matrix x = Power(power / 2);
+                return x * x;
+            }
+            return result * Power(power - 1);
         }
     }
 }

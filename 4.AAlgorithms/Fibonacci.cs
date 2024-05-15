@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using _4.AAlgorithms;
+using System.Numerics;
 using Testing;
 
 namespace FiboAlg
@@ -38,6 +39,17 @@ namespace FiboAlg
             double cst = (1 + sqrt) / 2;
             double result = (Math.Pow(cst, a) / sqrt) + 0.5;
             return Convert.ToInt32(Math.Round(result, 0, MidpointRounding.ToZero));
+        }
+
+        public int FibonacciMatrix(int a)
+        {
+            double[,] d = new double[2, 2];
+            d[0, 0] = 1;
+            d[1, 0] = 1;
+            d[0, 1] = 1;
+            d[1, 1] = 0;
+            Matrix m = new Matrix(d);
+            return Convert.ToInt32(m.Power(a)[0, 1]);
         }
     }
 }
