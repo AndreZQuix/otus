@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,15 +9,15 @@ namespace _4.AAlgorithms
 {
     public class Matrix
     {
-        private readonly double[,] data;
+        private readonly BigInteger[,] data;
         public int Height => data.GetUpperBound(0) + 1;
         public int Width => data.GetUpperBound(1) + 1;
 
-        public ref double this[int row, int column] => ref data[row, column];
+        public ref BigInteger this[int row, int column] => ref data[row, column];
 
-        public Matrix(int h, int w, double d = 1.0)
+        public Matrix(int h, int w, BigInteger d)
         {
-            data = new double[h, w];
+            data = new BigInteger[h, w];
             for(int i = 0; i < h; i++)
             {
                 for(int j = 0; j < w; j++)
@@ -26,7 +27,7 @@ namespace _4.AAlgorithms
             }
         }
 
-        public Matrix(double[,] data)
+        public Matrix(BigInteger[,] data)
         {
             this.data = data;
         }
@@ -58,7 +59,7 @@ namespace _4.AAlgorithms
             if(!IsMultiplyPossible(matrix))
             {
                 Console.WriteLine("Unable to multiply");
-                return new Matrix(Height, Width, -1.0);
+                return new Matrix(Height, Width, -1);
             }
 
             Matrix result = new Matrix(Height, matrix.Width, 0);
@@ -75,8 +76,10 @@ namespace _4.AAlgorithms
             return result;
         }
 
-        public Matrix Power(int power)
+        public Matrix Power(BigInteger power)
         {
+            if(power == 0) return new Matrix(Height, Width, 0);
+
             if (power == 1) return this;
             Matrix result = this;
             if (power % 2 == 0)

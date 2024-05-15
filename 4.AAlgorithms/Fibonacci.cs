@@ -9,7 +9,7 @@ namespace FiboAlg
         public string Run(string[] data)
         {
             BigInteger a = BigInteger.Parse(data[0]);
-            BigInteger res = FibonacciIter(a);
+            BigInteger res = FibonacciMatrix(a);
             return res.ToString();
         }
 
@@ -41,15 +41,15 @@ namespace FiboAlg
             return Convert.ToInt32(Math.Round(result, 0, MidpointRounding.ToZero));
         }
 
-        public int FibonacciMatrix(int a)
+        public BigInteger FibonacciMatrix(BigInteger a)
         {
-            double[,] d = new double[2, 2];
+            BigInteger[,] d = new BigInteger[2, 2];
             d[0, 0] = 1;
             d[1, 0] = 1;
             d[0, 1] = 1;
             d[1, 1] = 0;
             Matrix m = new Matrix(d);
-            return Convert.ToInt32(m.Power(a)[0, 1]);
+            return m.Power(a)[0, 1];
         }
     }
 }
