@@ -38,27 +38,50 @@ namespace BaseDataStructures
 
             //Console.WriteLine(vecArr.Size());
 
-            FactorArray<int> facArr = new FactorArray<int>(10, 2);
-            for (int i = 0; i < 10; i++)
+            //FactorArray<int> facArr = new FactorArray<int>(10, 2);
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    facArr[i] = i;
+            //}
+
+            //for (int i = 0; i < 5; i++)
+            //{
+            //    facArr.Put(i);
+            //}
+
+            //facArr.Put(facArr.Size(), 22);
+
+            //for (int i = 0; i < facArr.Size(); i++)
+            //{
+            //    Console.WriteLine(facArr[i]);
+            //}
+
+            //Console.WriteLine(facArr.Size());
+
+            int height = 4;
+            int width = 3;
+            MatrixArray<int> matrixArray = new MatrixArray<int>(height, width);
+            for(int i = 0; i < matrixArray.Height(); i++)
             {
-                facArr[i] = i;
+                for (int j = 0; j < matrixArray.Width(); j++)
+                {
+                    matrixArray[i, j] = i;
+                }
             }
 
-            for (int i = 0; i < 5; i++)
+            matrixArray[2, 1] = 5;
+
+            matrixArray.Put(3, 2, 11);
+            matrixArray.Del(1, 1);
+
+            for (int i = 0; i < matrixArray.Height(); i++)
             {
-                facArr.Put(i);
+                for (int j = 0; j < matrixArray.Width(); j++)
+                {
+                    Console.Write(matrixArray[i, j] + " ");
+                }
+                Console.WriteLine();
             }
-
-            facArr.Put(facArr.Size(), 22);
-
-            for (int i = 0; i < facArr.Size(); i++)
-            {
-                Console.WriteLine(facArr[i]);
-            }
-
-            Console.WriteLine(facArr.Size());
-
-
         }
     }
 }
