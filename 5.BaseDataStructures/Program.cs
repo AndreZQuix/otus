@@ -58,30 +58,42 @@ namespace BaseDataStructures
 
             //Console.WriteLine(facArr.Size());
 
-            int height = 4;
-            int width = 3;
-            MatrixArray<int> matrixArray = new MatrixArray<int>(height, width);
-            for(int i = 0; i < matrixArray.Height(); i++)
-            {
-                for (int j = 0; j < matrixArray.Width(); j++)
-                {
-                    matrixArray[i, j] = i;
-                }
-            }
+            //int height = 4;
+            //int width = 3;
+            //MatrixArray<int> matrixArray = new MatrixArray<int>(height, width);
+            //for(int i = 0; i < matrixArray.Height(); i++)
+            //{
+            //    for (int j = 0; j < matrixArray.Width(); j++)
+            //    {
+            //        matrixArray[i, j] = i;
+            //    }
+            //}
 
-            matrixArray[2, 1] = 5;
+            //matrixArray[2, 1] = 5;
 
-            matrixArray.Put(3, 2, 11);
-            matrixArray.Del(1, 1);
+            //matrixArray.Put(3, 2, 11);
+            //matrixArray.Del(1, 1);
 
-            for (int i = 0; i < matrixArray.Height(); i++)
-            {
-                for (int j = 0; j < matrixArray.Width(); j++)
-                {
-                    Console.Write(matrixArray[i, j] + " ");
-                }
-                Console.WriteLine();
-            }
+            //for (int i = 0; i < matrixArray.Height(); i++)
+            //{
+            //    for (int j = 0; j < matrixArray.Width(); j++)
+            //    {
+            //        Console.Write(matrixArray[i, j] + " ");
+            //    }
+            //    Console.WriteLine();
+            //}
+
+            var q = new PriorityQueue<int>();
+            q.Enqueue(1, 23);
+            q.Enqueue(1, 15);
+            q.Enqueue(3, 44);
+            Console.WriteLine("Current queue: ");
+            q.Print();
+            q.Dequeue();
+            q.Enqueue(0, 100);
+            q.Dequeue();
+            Console.WriteLine("Current queue: ");
+            q.Print();
         }
     }
 }
