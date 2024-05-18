@@ -11,61 +11,71 @@ namespace _5.BaseDataStructures
         internal class Queue<T>
         {
             internal int priority;
-            internal List<T> data;
+            internal VectorArray<T> data;
             internal Queue(int priority, T elem)
             {
                 this.priority = priority;
-                data = [elem];
+                data = new VectorArray<T>();
+                data.Put(elem);
             }
         }
 
-        List<Queue<T>> queues;
+        VectorArray<Queue<T>> queues;
 
         public PriorityQueue() 
         { 
-            queues = [];
+            queues = new VectorArray<Queue<T>>();
         }
 
         public void Enqueue(int priority, T item)
         {
-            foreach(var q in queues)
+            for(int i = 0; i < queues.Size(); i++)
             {
-                if(q.priority == priority)
+                if (queues[i].priority == priority)
                 {
-                    q.data.Add(item);
+                    queues[i].data.Put(item);
                     return;
                 }
             }
 
-            queues.Add(new Queue<T>(priority, item));
+            queues.Put(new Queue<T>(priority, item));
         }
 
         public T Dequeue() 
         {
-            Queue<T> queue = queues[0];
-            foreach(var q in queues)
+            if(queues.IsEmpty())
             {
-                if (q.priority < queue.priority)
-                    queue = q;
+                throw new ArgumentOutOfRangeException();
             }
-            var ret = queue.data.First();
-            queue.data.RemoveAt(0);
-            if(queue.data.Count == 0)
+
+            Queue<T> queue = queues[0];
+            int row = 0;
+            for(int i = 0; i < queues.Size(); i++)
             {
-                queues.Remove(queue);
+                if (queues[i].priority < queue.priority)
+                {
+                    queue = queues[i];
+                    row = i;
+                }
+            }
+            var ret = queue.data[0];
+            queue.data.Del(0);
+            if(queue.data.Size() == 0)
+            {
+                queues.Del(row);
             }
             return ret;
         }
 
         public void Print()
         {
-            foreach(var q in queues)
+            for(int i = 0; i < queues.Size(); i++)
             {
-                Console.Write("Priority: " + q.priority);
+                Console.Write("Priority: " + queues[i].priority);
                 Console.Write(" Data: ");
-                foreach(var item in q.data)
+                for (int j = 0; j < queues[i].data.Size(); j++)
                 {
-                    Console.Write($"{item} ");
+                    Console.Write($"{queues[i].data[j]} ");
                 }
                 Console.WriteLine();
             }

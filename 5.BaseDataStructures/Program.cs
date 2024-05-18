@@ -89,8 +89,19 @@ namespace BaseDataStructures
             q.Enqueue(3, 44);
             Console.WriteLine("Current queue: ");
             q.Print();
+
             q.Dequeue();
+            Console.WriteLine("Current queue: ");
+            q.Print();
+
             q.Enqueue(0, 100);
+            Console.WriteLine("Current queue: ");
+            q.Print();
+
+            q.Dequeue();
+            Console.WriteLine("Current queue: ");
+            q.Print();
+
             q.Dequeue();
             Console.WriteLine("Current queue: ");
             q.Print();

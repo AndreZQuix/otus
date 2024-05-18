@@ -95,21 +95,23 @@ namespace _5.BaseDataStructures
 
         public T Del(int index)
         {
-            if(index >= size)
+            if (index >= size)
             {
                 throw new IndexOutOfRangeException(nameof(index));
             }
 
             T val = data[index];
             T[] newData = new T[size - 1];
-            for(int i = 0; i < newData.Length; i++)
+            for (int i = 0; i < index; i++)
             {
-                if (i == index)
-                    continue;
                 newData[i] = data[i];
             }
+            for (int i = index + 1; i < size; i++)
+            {
+                newData[i - 1] = data[i];
+            }
+            --size;
             data = newData;
-            size--;
             return val;
         }
 

@@ -16,10 +16,10 @@ namespace _5.BaseDataStructures
 
         public VectorArray()
         { 
-            data = [];
             size = 0;
             vector = 100;
             capacity = size + vector;
+            data = new T[capacity];
         }
         
         public VectorArray(int size, int vector = 100)
@@ -77,7 +77,7 @@ namespace _5.BaseDataStructures
 
         public void Put(int index, T value)
         {
-            if(index > size)
+            if (index > size)
             {
                 throw new IndexOutOfRangeException();
             }
@@ -85,6 +85,13 @@ namespace _5.BaseDataStructures
             if(size == capacity)
             {
                 Resize();
+            }
+
+            if(index == size)
+            {
+                data[index] = value;
+                size++;
+                return;
             }
 
             T[] newData = new T[capacity];
@@ -119,14 +126,16 @@ namespace _5.BaseDataStructures
             }
 
             T val = data[index];
-            --size;
             T[] newData = new T[capacity];
-            for(int i = 0; i < size; i++)
+            for(int i = 0; i < index; i++)
             {
-                if (i == index)
-                    continue;
                 newData[i] = data[i];
             }
+            for(int i = index + 1; i < size; i++)
+            {
+                newData[i - 1] = data[i];
+            }
+            --size;
             data = newData;
             return val;
         }

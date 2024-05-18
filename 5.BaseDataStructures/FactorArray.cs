@@ -16,10 +16,10 @@ namespace _5.BaseDataStructures
 
         public FactorArray()
         { 
-            data = [];
             size = 0;
             vector = 2;
             capacity = size * vector;
+            data = new T[capacity];
         }
         
         public FactorArray(int size, int vector = 2)
@@ -87,6 +87,13 @@ namespace _5.BaseDataStructures
                 Resize();
             }
 
+            if (index == size)
+            {
+                data[index] = value;
+                size++;
+                return;
+            }
+
             T[] newData = new T[capacity];
             size++;
             for(int i = 0; i < index; i++)
@@ -113,20 +120,22 @@ namespace _5.BaseDataStructures
 
         public T Del(int index)
         {
-            if(index >= size)
+            if (index >= size)
             {
                 throw new IndexOutOfRangeException(nameof(index));
             }
 
             T val = data[index];
-            --size;
             T[] newData = new T[capacity];
-            for(int i = 0; i < size; i++)
+            for (int i = 0; i < index; i++)
             {
-                if (i == index)
-                    continue;
                 newData[i] = data[i];
             }
+            for (int i = index + 1; i < size; i++)
+            {
+                newData[i - 1] = data[i];
+            }
+            --size;
             data = newData;
             return val;
         }
