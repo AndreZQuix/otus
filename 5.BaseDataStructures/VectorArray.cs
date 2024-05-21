@@ -142,7 +142,6 @@ namespace _5.BaseDataStructures
 
         private void Resize()
         {
-            Console.WriteLine("Resize");
             capacity = size + vector;
             T[] newData = new T[capacity];
             data.CopyTo(newData, 0);

@@ -1,62 +1,209 @@
 ﻿using _5.BaseDataStructures;
+using System.Collections;
+using System.Diagnostics;
 using System.Security.Cryptography;
 
 namespace BaseDataStructures
 {
     public class Program
     {
+        public static void CheckSingleArray()
+        {
+            for (int i = 1000; i <= 1000000; i *= 10)
+            {
+                SingleArray<int> arr = new SingleArray<int>();
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
+                for (int j = 0; j < i; j++)
+                {
+                    arr.Put(j);
+                }
+                stopwatch.Stop();
+                Console.Write($"Single array put {i}: {stopwatch.ElapsedMilliseconds} ms\n");
+
+                stopwatch.Reset();
+                stopwatch.Start();
+                for (int j = 0; j < i; j++)
+                {
+                    arr.Del(0);
+                }
+                Console.Write($"Single array delete {i}: {stopwatch.ElapsedMilliseconds} ms\n");
+
+                SingleArray<int> arr2 = new SingleArray<int>();
+                stopwatch.Reset();
+                stopwatch.Start();
+                for (int j = 0; j < i; j++)
+                {
+                    arr2.Put(0, j);
+                }
+                stopwatch.Stop();
+                Console.Write($"Single array put at beginning {i}: {stopwatch.ElapsedMilliseconds} ms\n");
+
+                SingleArray<int> arr3 = new SingleArray<int>();
+                stopwatch.Reset();
+                stopwatch.Start();
+                Random rnd = new Random();
+                for (int j = 0; j < i; j++)
+                {
+                    arr3.Put(rnd.Next(0, arr3.Size()), j);
+                }
+                stopwatch.Stop();
+                Console.Write($"Single array put at random {i}: {stopwatch.ElapsedMilliseconds} ms\n");
+                Console.WriteLine();
+            }
+        }
+
+        public static void CheckVectorArray()
+        {
+            for (int i = 1000; i <= 1000000; i *= 10)
+            {
+                VectorArray<int> arr = new VectorArray<int>();
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
+                for (int j = 0; j < i; j++)
+                {
+                    arr.Put(j);
+                }
+                stopwatch.Stop();
+                Console.Write($"Vector array put {i}: {stopwatch.ElapsedMilliseconds} ms\n");
+
+                stopwatch.Reset();
+                stopwatch.Start();
+                for (int j = 0; j < i; j++)
+                {
+                    arr.Del(0);
+                }
+                Console.Write($"Vector array delete {i}: {stopwatch.ElapsedMilliseconds} ms\n");
+
+                VectorArray<int> arr2 = new VectorArray<int>();
+                stopwatch.Reset();
+                stopwatch.Start();
+                for (int j = 0; j < i; j++)
+                {
+                    arr.Put(0, j);
+                }
+                stopwatch.Stop();
+                Console.Write($"Vector array put at beginning {i}: {stopwatch.ElapsedMilliseconds} ms\n");
+
+                VectorArray<int> arr3 = new VectorArray<int>();
+                stopwatch.Reset();
+                stopwatch.Start();
+                Random rnd = new Random();
+                for (int j = 0; j < i; j++)
+                {
+                    arr.Put(rnd.Next(0, arr3.Size()), j);
+                }
+                stopwatch.Stop();
+                Console.Write($"Vector array put at random {i}: {stopwatch.ElapsedMilliseconds} ms\n");
+                Console.WriteLine();
+            }
+        }
+
+        public static void CheckFactorArray()
+        {
+            for (int i = 1000; i <= 1000000; i *= 10)
+            {
+                FactorArray<int> arr = new FactorArray<int>();
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
+                for (int j = 0; j < i; j++)
+                {
+                    arr.Put(j);
+                }
+                stopwatch.Stop();
+                Console.Write($"Factor array put {i}: {stopwatch.ElapsedMilliseconds} ms\n");
+
+                stopwatch.Reset();
+                stopwatch.Start();
+                for (int j = 0; j < i; j++)
+                {
+                    arr.Del(0);
+                }
+                Console.Write($"Factor array delete {i}: {stopwatch.ElapsedMilliseconds} ms\n");
+
+                FactorArray<int> arr2 = new FactorArray<int>();
+                stopwatch.Reset();
+                stopwatch.Start();
+                for (int j = 0; j < i; j++)
+                {
+                    arr.Put(0, j);
+                }
+                stopwatch.Stop();
+                Console.Write($"Factor array put at beginning {i}: {stopwatch.ElapsedMilliseconds} ms\n");
+
+                FactorArray<int> arr3 = new FactorArray<int>();
+                stopwatch.Reset();
+                stopwatch.Start();
+                Random rnd = new Random();
+                for (int j = 0; j < i; j++)
+                {
+                    arr.Put(rnd.Next(0, arr3.Size()), j);
+                }
+                stopwatch.Stop();
+                Console.Write($"Factor array put at random {i}: {stopwatch.ElapsedMilliseconds} ms\n");
+                Console.WriteLine();
+            }
+        }
+
+        public static void CheckDefaultArray()
+        {
+            for (int i = 1000; i <= 1000000; i *= 10)
+            {
+                ArrayList arr = new ArrayList();
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
+                for (int j = 0; j < i; j++)
+                {
+                    arr.Add(j);
+                }
+                stopwatch.Stop();
+                Console.Write($"Default array put {i}: {stopwatch.ElapsedMilliseconds} ms\n");
+
+                stopwatch.Reset();
+                stopwatch.Start();
+                for (int j = 0; j < i; j++)
+                {
+                    arr.RemoveAt(0);
+                }
+                Console.Write($"Default array delete {i}: {stopwatch.ElapsedMilliseconds} ms\n");
+
+                FactorArray<int> arr2 = new FactorArray<int>();
+                stopwatch.Reset();
+                stopwatch.Start();
+                for (int j = 0; j < i; j++)
+                {
+                    arr.Insert(0, j);
+                }
+                stopwatch.Stop();
+                Console.Write($"Default array put at beginning {i}: {stopwatch.ElapsedMilliseconds} ms\n");
+
+                FactorArray<int> arr3 = new FactorArray<int>();
+                stopwatch.Reset();
+                stopwatch.Start();
+                Random rnd = new Random();
+                for (int j = 0; j < i; j++)
+                {
+                    arr.Insert(rnd.Next(0, arr3.Size()), j);
+                }
+                stopwatch.Stop();
+                Console.Write($"Default array put at random {i}: {stopwatch.ElapsedMilliseconds} ms\n");
+                Console.WriteLine();
+            }
+        }
+
         public static void Main(string[] args)
         {
-            //SingleArray<int> arr = new SingleArray<int>(10);
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    arr[i] = i + 100;
-            //}
+            Console.WriteLine("VECTOR ARRAY");
+            CheckVectorArray();
 
-            //arr.Put(arr.Size());
+            Console.WriteLine("FACTOR ARRAY");
+            CheckFactorArray();
 
-            //for (int i = 0; i < arr.Size(); i++)
-            //{
-            //    Console.WriteLine(arr.Get(i));
-            //}
+            Console.WriteLine("DEFAULT ARRAY");
+            CheckDefaultArray();
 
-            //VectorArray<int> vecArr = new VectorArray<int>(10, 5);
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    vecArr[i] = i;
-            //}
-
-            //for (int i = 0; i < 5; i++)
-            //{
-            //    vecArr.Put(5, i);
-            //}
-
-            //for(int i = 0; i < vecArr.Size(); i++)
-            //{
-            //    Console.WriteLine(vecArr[i]);
-            //}
-
-            //Console.WriteLine(vecArr.Size());
-
-            //FactorArray<int> facArr = new FactorArray<int>(10, 2);
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    facArr[i] = i;
-            //}
-
-            //for (int i = 0; i < 5; i++)
-            //{
-            //    facArr.Put(i);
-            //}
-
-            //facArr.Put(facArr.Size(), 22);
-
-            //for (int i = 0; i < facArr.Size(); i++)
-            //{
-            //    Console.WriteLine(facArr[i]);
-            //}
-
-            //Console.WriteLine(facArr.Size());
+            Console.WriteLine("SINGLE ARRAY");
+            CheckSingleArray();
 
             //int height = 4;
             //int width = 3;
@@ -83,28 +230,28 @@ namespace BaseDataStructures
             //    Console.WriteLine();
             //}
 
-            var q = new PriorityQueue<int>();
-            q.Enqueue(1, 23);
-            q.Enqueue(1, 15);
-            q.Enqueue(3, 44);
-            Console.WriteLine("Current queue: ");
-            q.Print();
+            //var q = new PriorityQueue<int>();
+            //q.Enqueue(1, 23);
+            //q.Enqueue(1, 15);
+            //q.Enqueue(3, 44);
+            //Console.WriteLine("Current queue: ");
+            //q.Print();
 
-            q.Dequeue();
-            Console.WriteLine("Current queue: ");
-            q.Print();
+            //q.Dequeue();
+            //Console.WriteLine("Current queue: ");
+            //q.Print();
 
-            q.Enqueue(0, 100);
-            Console.WriteLine("Current queue: ");
-            q.Print();
+            //q.Enqueue(0, 100);
+            //Console.WriteLine("Current queue: ");
+            //q.Print();
 
-            q.Dequeue();
-            Console.WriteLine("Current queue: ");
-            q.Print();
+            //q.Dequeue();
+            //Console.WriteLine("Current queue: ");
+            //q.Print();
 
-            q.Dequeue();
-            Console.WriteLine("Current queue: ");
-            q.Print();
+            //q.Dequeue();
+            //Console.WriteLine("Current queue: ");
+            //q.Print();
         }
     }
 }

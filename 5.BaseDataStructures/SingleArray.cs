@@ -70,7 +70,8 @@ namespace _5.BaseDataStructures
                 return;
             }
 
-            T[] newData = new T[size + 1];
+            ++size;
+            T[] newData = new T[size];
             for (int i = 0; i < index; i++)
             {
                 newData[i] = data[i];
@@ -78,7 +79,7 @@ namespace _5.BaseDataStructures
             newData[index] = value;
             for(int i = index + 1; i < size; i++)
             {
-                newData[i] = data[i];
+                newData[i] = data[i - 1];
             }
             data = newData;
         }
