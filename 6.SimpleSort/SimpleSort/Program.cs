@@ -68,14 +68,14 @@ static int[] InsertionSort(int[] A)
     return A;
 }
 
-static int[] ShellSort(int[] A)
+static int[] ShellSort(int[] A, int gapDiv)
 {
     Stopwatch sw = Stopwatch.StartNew();
-    for (int gap = A.Length/2; gap > 0; gap /= 2)
+    for (int gap = A.Length / gapDiv; gap > 0; gap /= gapDiv)
     {
-        for(int j = gap; j < A.Length; j++)
+        for (int j = gap; j < A.Length; j++)
         {
-            for(int i = j; i >= gap; i -= gap)
+            for (int i = j; i >= gap; i -= gap)
             {
                 if (A[i - gap] <= A[i])
                     break;
@@ -105,8 +105,8 @@ Random rnd = new();
 //Console.WriteLine("Bubble sorted optimized: ");
 //BubbleSortOptimized(arr);
 
-Console.WriteLine("Insertion sorted: ");
-InsertionSort(arr);
+//Console.WriteLine("Insertion sorted: ");
+//InsertionSort(arr);
 //for (int i = 0; i < res2.Length; i++)
 //{
 //    Console.Write($"{res2[i]} ");
@@ -114,7 +114,8 @@ InsertionSort(arr);
 //Console.WriteLine("\n");
 
 Console.WriteLine("Shell sorted: ");
-ShellSort(arr);
+ShellSort(arr, 2);
+
 //for (int i = 0; i < res3.Length; i++)
 //{
 //    Console.Write($"{res3[i]} ");
