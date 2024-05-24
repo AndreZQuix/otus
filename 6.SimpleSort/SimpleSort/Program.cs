@@ -25,6 +25,30 @@ static int[] BubbleSort(int[] A)
     return A;
 }
 
+static int[] BubbleSortOptimized(int[] A)
+{
+    Stopwatch sw = Stopwatch.StartNew();
+    bool swapped = false;
+    for (int i = 0; i < A.Length; i++)
+    {
+        for (int j = 0; j < A.Length - i - 1; j++)
+        {
+            if (A[j] >= A[j + 1])
+            {
+                Swap(ref A, j, j + 1);
+                swapped = true;
+            }
+        }
+        if(!swapped)
+        {
+            break;
+        }
+    }
+    sw.Stop();
+    Console.WriteLine("Elapsed time: " + sw.ElapsedMilliseconds + " ms");
+    return A;
+}
+
 static int[] InsertionSort(int[] A)
 {
     Stopwatch sw = Stopwatch.StartNew();
@@ -64,37 +88,35 @@ static int[] ShellSort(int[] A)
     return A;
 }
 
-int size = 10;
+int size = 100000;
 int[] arr = new int[size];
 Random rnd = new();
-Console.WriteLine("Unsorted: ");
-for(int i = 0; i < size; i++)
-{
-    arr[i] = rnd.Next(0, size);
-    Console.Write($"{arr[i]} ");
-}
-Console.WriteLine("\n");
+//Console.WriteLine("Unsorted: ");
+//for(int i = 0; i < size; i++)
+//{
+//    arr[i] = rnd.Next(0, size);
+//    Console.Write($"{arr[i]} ");
+//}
+//Console.WriteLine("\n");
 
-Console.WriteLine("Bubble sorted: ");
-int[] res1 = BubbleSort(arr);
-for (int i = 0; i < res1.Length; i++)
-{
-    Console.Write($"{res1[i]} ");
-}
-Console.WriteLine("\n");
+//Console.WriteLine("Bubble sorted: ");
+//BubbleSort(arr);
+
+//Console.WriteLine("Bubble sorted optimized: ");
+//BubbleSortOptimized(arr);
 
 Console.WriteLine("Insertion sorted: ");
-int[] res2 = InsertionSort(arr);
-for (int i = 0; i < res2.Length; i++)
-{
-    Console.Write($"{res2[i]} ");
-}
-Console.WriteLine("\n");
+InsertionSort(arr);
+//for (int i = 0; i < res2.Length; i++)
+//{
+//    Console.Write($"{res2[i]} ");
+//}
+//Console.WriteLine("\n");
 
 Console.WriteLine("Shell sorted: ");
-int[] res3 = ShellSort(arr);
-for (int i = 0; i < res3.Length; i++)
-{
-    Console.Write($"{res3[i]} ");
-}
-Console.WriteLine("\n");
+ShellSort(arr);
+//for (int i = 0; i < res3.Length; i++)
+//{
+//    Console.Write($"{res3[i]} ");
+//}
+//Console.WriteLine("\n");
