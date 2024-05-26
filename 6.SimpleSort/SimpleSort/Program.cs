@@ -61,7 +61,62 @@ static int[] InsertionSort(int[] A)
                 break;
             Swap(ref A, index, index + 1);
             index--;
+
+            Console.WriteLine();
+            for(int j = 0; j < A.Length; j++)
+            {
+                Console.Write(A[j]);
+            }
         }
+    }
+    sw.Stop();
+    Console.WriteLine("Elapsed time: " + sw.ElapsedMilliseconds + " ms");
+    return A;
+}
+
+static int[] InsertionSortShift(int[] A)
+{
+    Stopwatch sw = Stopwatch.StartNew();
+    for (int i = 1; i < A.Length; i++)
+    {
+        int index = i;
+        int r = A[i];
+        while (index > 0)
+        {
+            if (A[index - 1] <= r)
+                break;
+            A[index] = A[index - 1];
+            index--;
+        }
+        A[index] = r;
+    }
+    sw.Stop();
+    Console.WriteLine("Elapsed time: " + sw.ElapsedMilliseconds + " ms");
+    return A;
+}
+
+static int BinarySearch(int[] A, int key, int left, int right)
+{
+    if (left > right)
+        return left;
+    int mid = (left + right) / 2;
+    if (key < A[mid])
+        return BinarySearch(A, key, left, mid - 1);
+    return BinarySearch(A, key, mid + 1, right);
+}
+
+static int[] InsertionSortBinarySearch(int[] A)
+{
+    Stopwatch sw = Stopwatch.StartNew();
+    for (int i = 1; i < A.Length; i++)
+    {
+        int r = A[i];
+        int pos = BinarySearch(A, r, 0, i - 1);
+        for(int j = i - 1; j >= pos; j--)
+        {
+            A[j + 1] = A[j];
+        }
+        A[pos] = r;
     }
     sw.Stop();
     Console.WriteLine("Elapsed time: " + sw.ElapsedMilliseconds + " ms");
@@ -88,16 +143,16 @@ static int[] ShellSort(int[] A, int gapDiv)
     return A;
 }
 
-int size = 100000;
+int size = 10;
 int[] arr = new int[size];
 Random rnd = new();
-//Console.WriteLine("Unsorted: ");
-//for(int i = 0; i < size; i++)
-//{
-//    arr[i] = rnd.Next(0, size);
-//    Console.Write($"{arr[i]} ");
-//}
-//Console.WriteLine("\n");
+Console.WriteLine("Unsorted: ");
+for (int i = 0; i < size; i++)
+{
+    arr[i] = rnd.Next(0, size);
+    Console.Write($"{arr[i]} ");
+}
+Console.WriteLine("\n");
 
 //Console.WriteLine("Bubble sorted: ");
 //BubbleSort(arr);
@@ -107,14 +162,17 @@ Random rnd = new();
 
 //Console.WriteLine("Insertion sorted: ");
 //InsertionSort(arr);
-//for (int i = 0; i < res2.Length; i++)
-//{
-//    Console.Write($"{res2[i]} ");
-//}
-//Console.WriteLine("\n");
 
-Console.WriteLine("Shell sorted: ");
-ShellSort(arr, 2);
+Console.WriteLine("Insertion sorted with binary search: ");
+var res2 = InsertionSortBinarySearch(arr);
+for (int i = 0; i < res2.Length; i++)
+{
+    Console.Write($"{res2[i]} ");
+}
+Console.WriteLine("\n");
+
+//Console.WriteLine("Shell sorted: ");
+//ShellSort(arr, 2);
 
 //for (int i = 0; i < res3.Length; i++)
 //{
