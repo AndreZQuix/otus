@@ -38,5 +38,16 @@ static int GetOnesBit_rev2(int num)
     return count;
 }
 
+static int GetOnesBit_rev3(int num)
+{
+    int[] ones = new int[256];
+    for (int i = 0; i < 256; i++)
+    {
+        ones[i] = GetOnesBit_rev1(i);
+    }
+    return ones[num];
+}
+
 Console.WriteLine(GetOnesBit_rev1(255));
 Console.WriteLine(GetOnesBit_rev2(255));
+Console.WriteLine(GetOnesBit_rev3(255));
