@@ -14,3 +14,16 @@ Console.WriteLine("Quick sort:");
 for (int i = 0; i < N; i++)
     Console.Write(arr[i] + " ");
 Console.WriteLine();
+
+int[] arr2 = { 10, 5, 4, 9, 17 };
+Console.WriteLine("Unsorted:");
+for (int i = 0; i < arr2.Length; i++)
+    Console.Write(arr2[i] + " ");
+Console.WriteLine();
+
+MergeSort mrg = new MergeSort();
+mrg.MergeSortAlg(ref arr2, 0, arr2.Length - 1);
+Console.WriteLine("Merge sort:");
+for (int i = 0; i < arr2.Length; i++)
+    Console.Write(arr2[i] + " ");
+Console.WriteLine();
