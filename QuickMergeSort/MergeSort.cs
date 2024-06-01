@@ -1,57 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Testing;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace QuickMergeSort
 {
-    public class MergeSort
+    public class MergeSort : ITask
     {
-        private void MergeArray(ref int[] array, int left, int middle, int right)
+        public string Run(string[] data)
         {
-            var leftArrayLength = middle - left + 1;
-            var rightArrayLength = right - middle;
-            var leftTempArray = new int[leftArrayLength];
-            var rightTempArray = new int[rightArrayLength];
-            int i, j;
-
-            i = 0;
-            j = 0;
-            int k = left;
-
-            while (i < leftArrayLength && j < rightArrayLength)
-            {
-                if (leftTempArray[i] <= rightTempArray[j])
-                {
-                    array[k++] = leftTempArray[i++];
-                }
-                else
-                {
-                    array[k++] = rightTempArray[j++];
-                }
-            }
-
-            while (i < leftArrayLength)
-            {
-                array[k++] = leftTempArray[i++];
-            }
-
-            while (j < rightArrayLength)
-            {
-                array[k++] = rightTempArray[j++];
-            }
+            int size = Convert.ToInt32(data[0]);
+            int[] arr = data[1].Split(" ").Select(int.Parse).ToArray();
+            MergeSortAlg(arr);
+            return System.String.Join(" ", arr);
         }
 
-        public void MergeSortAlg(ref int[] array, int left, int right)
+        private static void MergeArray(int[] arr, int[] left, int[] right)
         {
-            if (left < right)
+            int i = 0, j = 0, k = 0;
+
+            while (i < left.Length && j < right.Length)
             {
-                int middle = left + (right - left) / 2;
-                MergeSortAlg(ref array, left, middle);
-                MergeSortAlg(ref array, middle + 1, right);
-                MergeArray(ref array, left, middle, right);
+                if (left[i] <= right[j])
+                    arr[k++] = left[i++];
+                else
+                    arr[k++] = right[j++];
             }
+
+            while (i < left.Length)
+                arr[k++] = left[i++];
+
+            while (j < right.Length)
+                arr[k++] = right[j++];
+        }
+
+        public void MergeSortAlg(int[] arr)
+        {
+            if (arr.Length <= 1)
+                return;
+
+            int mid = arr.Length / 2;
+
+            int[] left = new int[mid];
+            int[] right = new int[arr.Length - mid];
+
+            for (int i = 0; i < mid; i++)
+                left[i] = arr[i];
+            for (int i = mid; i < arr.Length; i++)
+                right[i - mid] = arr[i];
+
+            MergeSortAlg(left);
+            MergeSortAlg(right);
+            MergeArray(arr, left, right);
         }
     }
 }

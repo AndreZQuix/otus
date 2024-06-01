@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Testing;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace QuickMergeSort
 {
-    public class QuickSort
+    public class QuickSort : ITask
     {
         private void Swap(ref int[] arr, int index1, int index2)
         {
@@ -48,6 +49,16 @@ namespace QuickMergeSort
                 QuickSortAlg(ref array, low, pivotIndex - 1);
                 QuickSortAlg(ref array, pivotIndex + 1, high);
             }
+        }
+
+        public string Run(string[] data)
+        {
+            int size = Convert.ToInt32(data[0]);
+            int[] arr = data[1].Split(" ").Select(int.Parse).ToArray();
+            QuickSortAlg(ref arr, 0, arr.Length - 1);
+            var str = System.String.Join(" ", arr);
+            Console.WriteLine(str);
+            return str;
         }
     }
 }

@@ -1,35 +1,22 @@
-﻿using QuickMergeSort;
-using System.Diagnostics;
+﻿using System.Diagnostics.Metrics;
+using Testing;
+using QuickMergeSort;
 
-static int[] CreateRandomArray(int size)
+public class Program
 {
-    int[] array = new int[size];
-    Random random = new Random();
-    for(int i = 0; i < size; i++)
+    public static void Main(string[] args)
     {
-        array[i] = random.Next();
+        MergeSort srt2 = new();
+        Tester tester2 = new Tester(srt2, $"C:\\Users\\User\\Downloads\\sorting-tests\\0.random");
+        tester2.RunTests();
+
+        tester2 = new Tester(srt2, $"C:\\Users\\User\\Downloads\\sorting-tests\\1.digits");
+        tester2.RunTests();
+
+        tester2 = new Tester(srt2, $"C:\\Users\\User\\Downloads\\sorting-tests\\2.sorted");
+        tester2.RunTests();
+
+        tester2 = new Tester(srt2, $"C:\\Users\\User\\Downloads\\sorting-tests\\3.revers");
+        tester2.RunTests();
     }
-    return array;
-}
-
-for(int i = 100; i <= 1000000; i *= 10)
-{
-    int[] arr = CreateRandomArray(i);
-    QuickSort srt = new();
-    Stopwatch sw = Stopwatch.StartNew();
-    srt.QuickSortAlg(ref arr, 0, arr.Length - 1);
-    sw.Stop();
-    Console.WriteLine($"Quick sort {i} elements: {sw.ElapsedMilliseconds} ms");
-}
-
-Console.WriteLine();
-
-for (int i = 100; i <= 1000000; i *= 10)
-{
-    int[] arr = CreateRandomArray(i);
-    MergeSort srt = new();
-    Stopwatch sw = Stopwatch.StartNew();
-    srt.MergeSortAlg(ref arr, 0, arr.Length - 1);
-    sw.Stop();
-    Console.WriteLine($"Merge sort {i} elements: {sw.ElapsedMilliseconds} ms");
 }
