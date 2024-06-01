@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Testing;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace QuickMergeSort
 {
@@ -15,7 +15,10 @@ namespace QuickMergeSort
         {
             int size = Convert.ToInt32(data[0]);
             int[] arr = data[1].Split(" ").Select(int.Parse).ToArray();
+            Stopwatch sw = Stopwatch.StartNew();
             MergeSortAlg(arr);
+            sw.Stop();
+            Console.WriteLine($"MergeSort elapsed time: {sw.ElapsedMilliseconds} ms");
             return System.String.Join(" ", arr);
         }
 

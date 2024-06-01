@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,55 +11,50 @@ namespace QuickMergeSort
 {
     public class QuickSort : ITask
     {
-        private void Swap(ref int[] arr, int index1, int index2)
+        private void Swap(int[] arr, long index1, int index2)
         {
             int temp = arr[index1];
             arr[index1] = arr[index2];
             arr[index2] = temp;
         }
 
-        private int Partition(ref int[] array, int low, int high)
+        private int Partition(ref int[] arr, int leftIndex, int rightIndex)
         {
-            int pivot = array[(low + high) / 2];
-            int i = low - 1;
-            int j = high + 1;
-            while (true)
+            int pivot = arr[rightIndex];
+            int middleIndex = leftIndex - 1;
+            for (int j = leftIndex; j <= rightIndex; j++)
             {
-                do
+                if (pivot >= arr[j])
                 {
-                    i++;
-                } while (array[i] < pivot);
-
-                do
-                {
-                    j--;
-                } while (array[j] > pivot);
-
-                if (i >= j)
-                    return j;
-
-                Swap(ref array, i, j);
+                    middleIndex++;
+                    if (middleIndex != j)
+                    {
+                        Swap(arr, middleIndex, j);
+                    }
+                }
             }
+            return middleIndex;
         }
 
-        public void QuickSortAlg(ref int[] array, int low, int high)
+        public void QuickSortAlg(ref int[] array, int leftIndex, int rightIndex)
         {
-            if (low < high)
-            {
-                int pivotIndex = Partition(ref array, low, high);
-                QuickSortAlg(ref array, low, pivotIndex - 1);
-                QuickSortAlg(ref array, pivotIndex + 1, high);
-            }
+            if (leftIndex >= rightIndex) return;
+            int middleIndex = Partition(ref array, leftIndex, rightIndex);
+            QuickSortAlg(ref array, leftIndex, middleIndex - 1);
+            QuickSortAlg(ref array, middleIndex + 1, rightIndex);
+            return;
         }
 
         public string Run(string[] data)
         {
             int size = Convert.ToInt32(data[0]);
             int[] arr = data[1].Split(" ").Select(int.Parse).ToArray();
+
+            Stopwatch sw = Stopwatch.StartNew();
             QuickSortAlg(ref arr, 0, arr.Length - 1);
-            var str = System.String.Join(" ", arr);
-            Console.WriteLine(str);
-            return str;
+            sw.Stop();
+            Console.WriteLine($"QuickSort elapsed time: {sw.ElapsedMilliseconds} ms");
+            return System.String.Join(" ", arr);
         }
     }
 }
