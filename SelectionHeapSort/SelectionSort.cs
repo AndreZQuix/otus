@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SelectionHeapSort
 {
-    public class SelectionSort : ITask
+    public class SelectionSort
     {
         private void Swap(ref int[] arr, int index1, int index2)
         {
