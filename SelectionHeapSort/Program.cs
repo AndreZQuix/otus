@@ -37,17 +37,17 @@ for (int i = 100; i <= 1000000; i *= 10)
 }
 
 HeapSort heapSrt = new();
-Tester tester = new(heapSrt, "C:\\Users\\User\\Downloads\\sorting-tests\\0.random");
-tester.RunTests();
+Tester tester2 = new(heapSrt, "C:\\Users\\User\\Downloads\\sorting-tests\\0.random");
+tester2.RunTests();
 
-tester = new(heapSrt, "C:\\Users\\User\\Downloads\\sorting-tests\\1.digits");
-tester.RunTests();
+tester2 = new(heapSrt, "C:\\Users\\User\\Downloads\\sorting-tests\\1.digits");
+tester2.RunTests();
 
-tester = new(heapSrt, "C:\\Users\\User\\Downloads\\sorting-tests\\2.sorted");
-tester.RunTests();
+tester2 = new(heapSrt, "C:\\Users\\User\\Downloads\\sorting-tests\\2.sorted");
+tester2.RunTests();
 
-tester = new(heapSrt, "C:\\Users\\User\\Downloads\\sorting-tests\\3.revers");
-tester.RunTests();
+tester2 = new(heapSrt, "C:\\Users\\User\\Downloads\\sorting-tests\\3.revers");
+tester2.RunTests();
 
 for (int i = 100; i <= 1000000; i *= 10)
 {
