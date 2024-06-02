@@ -35,3 +35,26 @@ for (int i = 100; i <= 1000000; i *= 10)
     sw.Stop();
     Console.WriteLine($"Elapsed selection sort time for {i} elements: {sw.ElapsedMilliseconds} ms");
 }
+
+HeapSort heapSrt = new();
+Tester tester = new(heapSrt, "C:\\Users\\User\\Downloads\\sorting-tests\\0.random");
+tester.RunTests();
+
+tester = new(heapSrt, "C:\\Users\\User\\Downloads\\sorting-tests\\1.digits");
+tester.RunTests();
+
+tester = new(heapSrt, "C:\\Users\\User\\Downloads\\sorting-tests\\2.sorted");
+tester.RunTests();
+
+tester = new(heapSrt, "C:\\Users\\User\\Downloads\\sorting-tests\\3.revers");
+tester.RunTests();
+
+for (int i = 100; i <= 1000000; i *= 10)
+{
+    int[] arr = CreateRandomArray(i);
+    HeapSort heapSrt2 = new();
+    Stopwatch sw = Stopwatch.StartNew();
+    heapSrt2.HeapSortAlg(ref arr);
+    sw.Stop();
+    Console.WriteLine($"Elapsed heap sort time for {i} elements: {sw.ElapsedMilliseconds} ms");
+}
