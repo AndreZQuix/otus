@@ -22,15 +22,6 @@ for (int i = 100; i <= 1000000; i *= 10)
     Console.WriteLine($"Elapsed bucket sort time for {i} elements: {sw.ElapsedMilliseconds} ms");
 }
 
-//int[] arr = [0, 1, 1, 1, 2, 0, 1, 1, 0, 2];
-//CountSort srt = new();
-//srt.Sort(ref arr);
-//for(int i = 0; i < arr.Length; i++)
-//{
-//    Console.Write(arr[i] + " ");
-//}
-//Console.WriteLine();
-
 for (int i = 100; i <= 1000000; i *= 10)
 {
     int[] arr = CreateRandomArray(i);
@@ -39,4 +30,14 @@ for (int i = 100; i <= 1000000; i *= 10)
     srt.Sort(ref arr);
     sw.Stop();
     Console.WriteLine($"Elapsed count sort time for {i} elements: {sw.ElapsedMilliseconds} ms");
+}
+
+for (int i = 100; i <= 1000000; i *= 10)
+{
+    int[] arr = CreateRandomArray(i);
+    RadixSort srt = new();
+    Stopwatch sw = Stopwatch.StartNew();
+    srt.Sort(ref arr);
+    sw.Stop();
+    Console.WriteLine($"Elapsed radix sort time for {i} elements: {sw.ElapsedMilliseconds} ms");
 }
