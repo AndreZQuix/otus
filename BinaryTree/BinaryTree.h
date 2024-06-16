@@ -23,43 +23,6 @@ private:
 	Node* root;
 	size_t size;
 
-	Node* Insert(Node* node, T key) {
-		if (node == nullptr) {
-			size++;
-			return new Node(key);
-		}
-
-		if (node->key == key) {
-			return node;
-		}
-
-		if (node->key > key) {
-			node->left = Insert(node->left, key);
-		}
-		else {
-			node->right = Insert(node->right, key);
-		}
-
-		return node;
-	};
-
-	bool Search(Node* node, const T& key) const {
-		if (node == nullptr) {
-			return false;
-		}
-
-		if (node->key == key) {
-			return true;
-		}
-
-		if (node->key > key) {
-			return Search(node->left, key);
-		}
-		else {
-			return Search(node->right, key);
-		}
-	};
-
 	typedef void (*node_action)(T);
 
 	void Iterate(Node* node, node_action action) {
@@ -125,11 +88,56 @@ public:
 	};
 
 	void Insert(T key) {
-		root = Insert(root, key);
+		if (root == nullptr) {
+			size++;
+			root = new Node(key);
+			return;
+		}
+
+		Node* temp = root;
+		Node* parent = temp;
+		while (temp != nullptr) {
+			parent = temp;
+			if (temp->key > key) {
+				temp = temp->left;
+			}
+			else if (temp->key < key) {
+				temp = temp->right;
+			}
+			else {
+				return;
+			}
+		}
+
+		temp = new Node(key);
+		if (parent->key > temp->key) {
+			parent->left = temp;
+		}
+		else {
+			parent->right = temp;
+		}
+		size++;
 	};
 
 	bool Search(const T& key) const {
-		return Search(root, key);
+		if (root == nullptr) {
+			return false;
+		}
+
+		Node* temp = root;
+		while (temp != nullptr) {
+			if (temp->key > key) {
+				temp = temp->left;
+			}
+			else if (temp->key < key) {
+				temp = temp->right;
+			}
+			else {
+				return true;
+			}
+		}
+
+		return false;
 	};
 
 	void Iterate(node_action action) {
