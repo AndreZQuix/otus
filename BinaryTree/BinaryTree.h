@@ -36,11 +36,11 @@ private:
 	};
 
 	Node* MostLeftChild(Node* node) {
-		if (node->left == nullptr) {
-			return node;
+		Node* temp = node;
+		while (temp->left != nullptr) {
+			temp = temp->left;
 		}
-		
-		return MostLeftChild(node->left);
+		return temp;
 	};
 
 	Node* Remove(Node* node, const T& key) {
