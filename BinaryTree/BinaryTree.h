@@ -72,6 +72,48 @@ private:
 		Iterate(node->right, action);
 	};
 
+	Node* MostLeftChild(Node* node) {
+		if (node->left == nullptr) {
+			return node;
+		}
+		
+		return MostLeftChild(node->left);
+	};
+
+	Node* Remove(Node* node, const T& key) {
+		if (node == nullptr) {
+			return nullptr;
+		}
+
+		if (key < node->key) {
+			node->left = Remove(node->left, key);
+		}
+		else if (key > node->key) {
+			node->right = Remove(node->right, key);
+		}
+		else {
+			if (node->left == nullptr) {
+				Node* temp = node->right;
+				size--;
+				delete node;
+				node = temp;
+			}
+			else if(node->right == nullptr) {
+				Node* temp = node->left;
+				size--;
+				delete node;
+				node = temp;
+			}
+			else {
+				Node* child = MostLeftChild(node->right);
+				node->key = child->key;
+				node->right = Remove(node->right, child->key);
+			}
+		}
+
+		return node;
+	};
+
 public:
 	BinaryTree<T>() {
 		size = 0;
@@ -92,6 +134,10 @@ public:
 
 	void Iterate(node_action action) {
 		Iterate(root, action);
+	};
+
+	void Remove(const T& key) {
+		root = Remove(root, key);
 	};
 };
 
