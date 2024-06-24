@@ -48,6 +48,12 @@ void FillTree(SplayTree<int>& tree, const std::vector<int>& numbers) {
 	}
 };
 
+void FillTree(Treap<int>& tree, const std::vector<int>& numbers) {
+	for (int i = 0; i < numbers.size(); i++) {
+		tree.Insert(numbers[i]);
+	}
+};
+
 void CheckBinaryTrees() {
 	const int size = 1000000;
 
@@ -194,6 +200,44 @@ void CheckSplayTrees() {
 	std::cout << "Second splay tree with numbers search time: " << time << " ms.\n";
 };
 
+void CheckTreaps() {
+	const int size = 100000;
+
+	Treap<int> tree1;
+	std::vector<int> randomNumbers = GetNumbersVector(size, false);
+
+	auto start = std::chrono::high_resolution_clock::now();
+	FillTree(tree1, randomNumbers);
+	auto finish = std::chrono::high_resolution_clock::now();
+	auto time = std::chrono::duration_cast<std::chrono::milliseconds>(finish - start).count();
+	std::cout << "First treap with random numbers fill time: " << time << " ms. Size: " << tree1.Size() << "\n";
+
+	start = std::chrono::high_resolution_clock::now();
+	for (int i = 0; i < size / 10; i++) {
+		tree1.Search(randomNumbers[i]);
+	}
+	finish = std::chrono::high_resolution_clock::now();
+	time = std::chrono::duration_cast<std::chrono::milliseconds>(finish - start).count();
+	std::cout << "First treap with random numbers search time: " << time << " ms.\n";
+
+	Treap<int> tree2;
+	std::vector<int> numbers = GetNumbersVector(size, false);
+
+	start = std::chrono::high_resolution_clock::now();
+	FillTree(tree2, numbers);
+	finish = std::chrono::high_resolution_clock::now();
+	time = std::chrono::duration_cast<std::chrono::milliseconds>(finish - start).count();
+	std::cout << "Second treap with numbers fill time: " << time << " ms. Size: " << tree2.Size() << "\n";
+
+	start = std::chrono::high_resolution_clock::now();
+	for (int i = 0; i < size / 10; i++) {
+		tree2.Search(numbers[i]);
+	}
+	finish = std::chrono::high_resolution_clock::now();
+	time = std::chrono::duration_cast<std::chrono::milliseconds>(finish - start).count();
+	std::cout << "Second treap with numbers search time: " << time << " ms.\n";
+};
+
 int main() {
-	CheckSplayTrees();
+	CheckTreaps();
 };
