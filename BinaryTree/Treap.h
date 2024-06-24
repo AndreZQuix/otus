@@ -37,59 +37,58 @@ private:
 		Iterate(node->right, action);
 	};
 
-	Node* Merge(Node* l, Node* r) {
+	void Merge(Node* curr_root, Node* l, Node* r) {
 		if (l == nullptr) {
-			return r;
+			curr_root = r;
+			return;
 		}
 
 		if (r == nullptr) {
-			return l;
+			curr_root = l;
+			return;
 		}
 
 		if (l->priority > r->priority) {
-			root = l;
-			Merge(root->right, l->right, r);
+			Merge(l->right, l->right, r);
+			curr_root = l;
 		}
 		else {
-			root = r;
-			Merge(root->left, l, r->left);
+			Merge(r->left, l, r->left);
+			curr_root = r;
 		}
 	};
 
-	void Split(Node* source_tree, int x_key, Node* left_tree, Node* right_tree) {
-		if (source_tree == nullptr) {
+	void Split(Node* curr_root, int x_key, Node* left_tree, Node* right_tree) {
+		if (curr_root == nullptr) {
 			left_tree = right_tree = nullptr;
 			return;
 		}
 
-		if (x_key >= source_tree->key) {
-			left_tree = source_tree;
-			Split(source_tree->right, x_key, source_tree->right, right_tree);
+		if (x_key >= curr_root->key) {
+			Split(curr_root->right, x_key, curr_root->right, right_tree);
+			left_tree = curr_root;
 		}
 		else {
-			right_tree = root;
-			Split(source_tree->left, x_key, left_tree, source_tree->left);
+			Split(curr_root->left, x_key, left_tree, curr_root->left);
+			right_tree = curr_root;
 		}
 	};
 
 	Node* Insert(Node* curr_root, Node* new_node) {
 		if (curr_root == nullptr) {
-			return new_node;
+			size++;
+			curr_root = new_node;
 		}
-
-		if (new_node->priority > curr_root->priority) {
+		else if (new_node->priority > curr_root->priority) {
+			size++;
 			Split(curr_root, new_node->key, new_node->left, new_node->right);
-			return new_node;
+			curr_root = new_node;
 		}
 		else {
-			if (new_node->key < curr_root->key) {
-				curr_root->left = Insert(curr_root->left, new_node);
-			}
-			else {
-				curr_root->right = Insert(curr_root->right, new_node);
-			}
-			return curr_root;
+			curr_root = Insert(curr_root->key <= new_node->key ? curr_root->right : curr_root->left, new_node);
 		}
+
+		return curr_root;
 	};
 
 public:
@@ -117,7 +116,7 @@ public:
 		}
 
 		if (root->key == key) {
-			root = Merge(root, root->left, root->right);
+			Merge(root, root->left, root->right);
 		}
 		else {
 			if (key < root->key) {
