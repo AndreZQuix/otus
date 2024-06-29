@@ -10,13 +10,14 @@ int main() {
 	table.Insert("test", 11);
 	table.Insert("another", 11);
 	std::cout << table;
-	std::cout << "\nSize is " << table.Size() << " " << table.Capacity();
+	std::cout << "\nSize is " << table.Size() << ". Capacity is " << table.Capacity();
 
 	std::cout << "\nRemoving\n";
 	table.Remove("hello");
 	table.Remove("hello");
 	table.Remove("hello");
 	table.Remove("news");
+	table.Insert("hello", 21);
 	std::cout << table;
-	std::cout << "\nSize is " << table.Size() << " " << table.Capacity();
+	std::cout << "\nSize is " << table.Size() << ". Capacity is " << table.Capacity();
 };

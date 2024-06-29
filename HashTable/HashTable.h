@@ -54,37 +54,7 @@ private:
 		return std::hash<std::string>{}(str) % capacity;
 	};
 
-	void ResizeTable() {
-		size_t new_capacity = capacity * 2;
-		Node** new_table = new Node * [new_capacity];
-		for (size_t i = 0; i < capacity; i++) {
-			new_table[i] = table[i];
-		}
-
-		for (size_t i = capacity; i < new_capacity; i++) {
-			new_table[i] = nullptr;
-		}
-
-		delete[] table;
-		table = new_table;
-		capacity = new_capacity;
-	};
-
-public:
-	
-	size_t Size() const {
-		return size;
-	};
-
-	size_t Capacity() const {
-		return capacity;
-	};
-
-	Node* Insert(std::string key, int value) {
-		if (size >= capacity / 2) {
-			ResizeTable();
-		}
-
+	Node* AddToTable(std::string key, int value) {
 		size_t target_index = 0;
 		size_t hash_index = GenerateHash(key);
 		if (table[hash_index] == nullptr || table[hash_index] == del_node) {
@@ -105,8 +75,46 @@ public:
 
 		Node* new_node = new Node(key, value);
 		table[target_index] = new_node;
-		size++;
 		return new_node;
+	};
+
+	void ResizeTable() {
+		size_t old_capacity = capacity;
+		capacity *= 2;
+		Node** old_table = new Node*[old_capacity];
+		for (size_t i = 0; i < old_capacity; i++) {
+			old_table[i] = table[i];
+		}
+		table = new Node*[capacity];
+		for (size_t i = 0; i < capacity; i++) {
+			table[i] = nullptr;
+		}
+		for (size_t i = 0; i < old_capacity; i++) {
+			if (old_table[i] != nullptr) {
+				AddToTable(old_table[i]->key, old_table[i]->value);
+			}
+		}
+		
+		delete[] old_table;
+	};
+
+public:
+	
+	size_t Size() const {
+		return size;
+	};
+
+	size_t Capacity() const {
+		return capacity;
+	};
+
+	Node* Insert(std::string key, int value) {
+		if (size >= capacity / 2) {
+			ResizeTable();
+		}
+
+		size++;
+		return AddToTable(key, value);
 	};
 
 	bool Remove(const std::string& key) {
