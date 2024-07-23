@@ -396,3 +396,9 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/BinaryTree/BinaryTree.vcxproj
+/BinaryTree/BinaryTree.vcxproj.filters
+/Graphs/Graphs.vcxproj
+/Graphs/Graphs.vcxproj.filters
+/HashTable/HashTable.vcxproj
+/HashTable/HashTable.vcxproj.filters
