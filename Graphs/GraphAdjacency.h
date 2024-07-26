@@ -7,7 +7,6 @@ class GraphAdjacency : Graph {
 
 public:
 	GraphAdjacency() {};
-	GraphAdjacency(std::vector<std::vector<int>> matrix) : matrix(matrix) {};
 	GraphAdjacency(size_t vertexes_amount) {
 		++vertexes_amount;
 		matrix = std::vector<std::vector<int>>(vertexes_amount);

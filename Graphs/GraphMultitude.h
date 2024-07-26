@@ -9,7 +9,6 @@ class GraphMultitude : Graph { // множество
 
 public:
 	GraphMultitude() {};
-	GraphMultitude(std::map<int, std::vector<std::pair<int, int>>> edges) : edges(edges) {};
 
 	void AddEdge(int v1, int v2, int weight = 1) override {
 		bool isVertexExists = false;

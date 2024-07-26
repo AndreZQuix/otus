@@ -7,7 +7,6 @@ class GraphList : Graph { // перечень ребер
 
 public:
 	GraphList() {};
-	GraphList(std::vector<std::pair<int, int>> list) : list(list) {};
 
 	void AddEdge(int v1, int v2, int weight = 1) override {
 		bool edgeExists = std::find(list.begin(), list.end(), std::make_pair(v1, v2)) != list.end();

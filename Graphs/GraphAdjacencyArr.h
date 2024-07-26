@@ -7,7 +7,6 @@ class GraphAdjacencyArr : Graph { // массив смежности
 
 public:
 	GraphAdjacencyArr() {};
-	GraphAdjacencyArr(std::vector<std::vector<int>> vec) : vec(vec) {};
 
 	void AddEdge(int v1, int v2, int weight = 1) override {
 		int max = std::max(v1, v2);
