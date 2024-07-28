@@ -1,6 +1,20 @@
 #include "Graph.h"
 
 int main() {
+	Graph simple_graph;
+	simple_graph.AddEdge(1, 2);
+	simple_graph.AddEdge(2, 5);
+	simple_graph.AddEdge(5, 3);
+	simple_graph.AddEdge(3, 4);
+	simple_graph.AddEdge(6, 3);
+	simple_graph.AddEdge(8, 9);
+	simple_graph.AddEdge(6, 7);
+	simple_graph.AddEdge(7, 9);
+	simple_graph.AddEdge(9, 10);
+	simple_graph.AddEdge(2, 10);
+	simple_graph.PrintEdges();
+	std::cout << "\n";
+
 	Graph graph(std::vector<std::vector<int>> {
 				{ 0, 1, 1, 0, 0, 0, 1 },
 				{ 1, 0, 1, 1, 0, 0, 0 },
