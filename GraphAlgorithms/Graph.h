@@ -5,10 +5,11 @@
 #include <string>
 #include <stack>
 #include <queue>
+#include <list>
 
 class Graph {
 	std::vector<std::vector<int>> matrix;
-	
+
 	bool DFS_util(int begin, int end, std::stack<int>& path, std::vector<bool>& visited) {
 		visited[begin] = true;
 
@@ -16,7 +17,7 @@ class Graph {
 			return true;
 		}
 
-		for (int i = 0; i < matrix.size(); i++) {
+		for (size_t i = 0; i < matrix.size(); i++) {
 			if (visited[i]) {
 				continue;
 			}
@@ -36,7 +37,7 @@ class Graph {
 
 	bool DFS_with_stack(int vertex, std::stack<int>& stack, std::vector<bool>& visited) {
 		visited[vertex] = true;
-		for (int i = 0; i < matrix.size(); i++) {
+		for (size_t i = 0; i < matrix.size(); i++) {
 			if (matrix[vertex][i] == 0) {
 				continue;
 			}
@@ -49,6 +50,21 @@ class Graph {
 		}
 		stack.push(vertex);
 		return true;
+	};
+
+	void DFS_Kosaraju(int vertex, std::stack<int>& stack, std::vector<bool>& visited) {
+		if (visited[vertex]) {
+			return;
+		}
+		visited[vertex] = true;
+		for (size_t i = 0; i < matrix.size(); i++) {
+			if (matrix[vertex][i] == 0) {
+				continue;
+			}
+
+			DFS_Kosaraju(i, stack, visited);
+		}
+		stack.push(vertex);
 	};
 
 	enum VERTEX_STATE {
@@ -208,6 +224,47 @@ public:
 			path.pop();
 		}
 		std::cout << "Tarjan topological sorting: " << path_str << '\n';
+		return true;
+	};
+
+	bool Kosaraju(std::list<std::list<int>>& components) {
+		Graph rev;
+		for (size_t i = 0; i < matrix.size(); i++) {
+			for (size_t j = 0; j < matrix.size(); j++) {
+				rev.AddEdge(j + 1, i + 1, matrix[i][j]);
+			}
+		}
+
+		std::cout << "Reversed graph: \n";
+		rev.PrintEdges();
+
+		std::stack<int> path;
+		std::vector<bool> visited = std::vector<bool>(matrix.size());
+		for (int i = 0; i < matrix.size(); i++) {
+			if (!visited[i]) {
+				if (!rev.DFS_with_stack(i, path, visited)) {
+					return false;
+				}
+			}
+		}
+
+		std::stack<int> stack;
+		visited = std::vector<bool>(matrix.size());
+		while (!path.empty()) {
+			int vertex = path.top();
+			path.pop();
+			std::list<int> vertexes;
+			DFS_Kosaraju(vertex, stack, visited);
+			while (!stack.empty()) {
+				int v = stack.top() + 1;
+				vertexes.push_back(v);
+				stack.pop();
+			}
+			if (!vertexes.empty()) {
+				components.push_back(vertexes);
+			}
+		}
+
 		return true;
 	};
 };

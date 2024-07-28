@@ -35,8 +35,28 @@ int main() {
 	graph3.AddEdge(3, 2);
 	graph3.AddEdge(4, 6);
 	graph3.AddEdge(6, 5);
-	graph2.PrintEdges();
-	graph2.TarjanSort();
+	graph3.PrintEdges();
+	graph3.TarjanSort();
+	std::cout << '\n';
 
-
+	Graph graph4(std::vector<std::vector<int>> {
+		{ 0, 1, 0, 0, 0, 0, 0, 0 },
+		{ 0, 0, 1, 0, 1, 1, 0, 0 },
+		{ 0, 0, 0, 1, 0, 0, 1, 0 },
+		{ 0, 0, 1, 0, 0, 0, 0, 1 },
+		{ 1, 0, 0, 0, 0, 1, 0, 0 },
+		{ 0, 0, 0, 0, 0, 0, 1, 0 },
+		{ 0, 0, 0, 0, 0, 1, 0, 0 },
+		{ 0, 0, 0, 1, 0, 0, 1, 0 },
+	});
+	graph4.PrintEdges();
+	std::list<std::list<int>> result;
+	graph4.Kosaraju(result);
+	std::cout << "Strongly connected components: ";
+	for (const auto& lst : result) {
+		for (const auto v : lst) {
+			std::cout << v << " ";
+		}
+		std::cout << "| ";
+	}
 };
