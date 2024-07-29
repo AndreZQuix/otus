@@ -73,4 +73,28 @@ int main() {
 		}
 		std::cout << "| ";
 	}
+	std::cout << '\n';
+
+	Graph graph5;
+	graph5.AddEdge(1, 2, 2);
+	graph5.AddEdge(2, 1, 2);
+	graph5.AddEdge(1, 3, 2);
+	graph5.AddEdge(3, 1, 2);
+	graph5.AddEdge(1, 5, 1);
+	graph5.AddEdge(5, 1, 1);
+	graph5.AddEdge(1, 7, 3);
+	graph5.AddEdge(7, 1, 3);
+	graph5.AddEdge(3, 2, 3);
+	graph5.AddEdge(2, 3, 3);
+	graph5.AddEdge(2, 4, 3);
+	graph5.AddEdge(4, 2, 3);
+	graph5.AddEdge(4, 5, 2);
+	graph5.AddEdge(5, 4, 2);
+	graph5.AddEdge(5, 6, 4);
+	graph5.AddEdge(6, 5, 4);
+	graph5.AddEdge(6, 7, 2);
+	graph5.AddEdge(7, 6, 2);
+	graph5.PrintEdges();
+	graph5.Kruskal();
+	graph5.Prim();
 };

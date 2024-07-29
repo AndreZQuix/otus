@@ -6,9 +6,25 @@
 #include <stack>
 #include <queue>
 #include <list>
+#include <set>
+
+class Edge {
+	int begin;
+	int end;
+	int weight;
+
+public:
+	Edge(int begin, int end, int weight) : begin(begin), end(end), weight(weight) {};
+	int Begin() const { return begin; }
+	int End() const { return end; }
+	int Weight() const { return weight; }
+	bool operator<(const Edge& edge) const { return weight < edge.weight; }
+};
 
 class Graph {
 	std::vector<std::vector<int>> matrix;
+	std::vector<int> parents;
+	int minimal_weight;
 
 	bool DFS_util(int begin, int end, std::stack<int>& path, std::vector<bool>& visited) {
 		visited[begin] = true;
@@ -72,8 +88,13 @@ class Graph {
 	};
 
 public:
-	Graph() {};
-	Graph(const std::vector<std::vector<int>> matrix) : matrix(matrix) {};
+	Graph() : minimal_weight(0) {};
+	Graph(const std::vector<std::vector<int>> matrix) : matrix(matrix), minimal_weight(0) {};
+
+	int GetParent(int vertex) {
+		if (parents[vertex] == vertex) return vertex;
+		return GetParent(parents[vertex]);
+	};
 
 	void AddEdge(int v1, int v2, int weight = 1) {
 		v1--;
@@ -266,5 +287,104 @@ public:
 		}
 
 		return true;
+	};
+
+	std::multiset<Edge> Kruskal() {
+		std::multiset<Edge> ret;
+
+		int min_weight = 0;
+		std::multiset<Edge> set;
+		for (size_t i = 0; i < matrix.size(); i++) {
+			for (size_t j = i + 1; j < matrix.size(); j++) {
+				if (matrix[i][j] == 0)
+					continue;
+				Edge edge = Edge(i, j, matrix[i][j]);
+				set.emplace(edge);
+			}
+		}
+		for (size_t i = 0; i < matrix.size(); i++) {
+			parents.push_back(i);
+		}
+		
+		for (const auto& e : set) {
+			int beg = GetParent(e.Begin());
+			int end = GetParent(e.End());
+			if (end == beg) {
+				continue;
+			}
+
+			ret.emplace(e);
+			min_weight += e.Weight();
+			parents[end] = beg;
+		}
+
+		std::cout << "Kruskal's result: \n";
+		for (const auto& r : ret) {
+			std::cout << r.Begin() + 1 << " - " << r.End() + 1 << ": " << r.Weight() << "\n";
+		}
+
+		return ret;
+	};
+
+	int FullWeight() const {
+		int weight = 0;
+		for (size_t i = 0; i < matrix.size(); i++) {
+			for (size_t j = 0; j < matrix.size(); j++) {
+				weight += matrix[i][j];
+			}
+		}
+		return weight;
+	};
+
+	Edge SearchMinimalEdge(std::vector<bool>& visited) {
+		int weight_min_edge = FullWeight();
+		int begin = 0;
+		int end = 0;
+		for (size_t i = 0; i < matrix.size(); i++) {
+			if (!visited[i]) {
+				continue;
+			}
+
+			for (size_t j = 0; j < matrix.size(); j++) {
+				if (visited[j]) {
+					continue;
+				}
+
+				if (matrix[i][j] == 0) {
+					continue;
+				}
+
+				if (matrix[i][j] < weight_min_edge) {
+					weight_min_edge = matrix[i][j];
+					begin = i;
+					end = j;
+				}
+			}
+		}
+
+		minimal_weight += weight_min_edge;
+		return Edge(begin, end, weight_min_edge);
+	};
+
+	std::multiset<Edge> Prim() {
+		std::vector<bool> visited = std::vector<bool>(matrix.size());
+		size_t count = 0;
+		int weight_full = FullWeight();
+		std::multiset<Edge> edges;
+		while (count < matrix.size()) {
+			Edge edge = SearchMinimalEdge(visited);
+			if (edge.Begin() != edge.End()) {
+				edges.emplace(edge);
+			}
+			visited[edge.End()] = true;
+			count++;
+		}
+
+		std::cout << "Prim's result: \n";
+		for (const auto& r : edges) {
+			std::cout << r.Begin() + 1 << " - " << r.End() + 1 << ": " << r.Weight() << "\n";
+		}
+
+		return edges;
 	};
 };
