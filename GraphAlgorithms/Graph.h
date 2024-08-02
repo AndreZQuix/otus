@@ -91,6 +91,8 @@ public:
 	Graph() : minimal_weight(0) {};
 	Graph(const std::vector<std::vector<int>> matrix) : matrix(matrix), minimal_weight(0) {};
 
+	size_t Size() const { return matrix.size(); };
+
 	int GetParent(int vertex) {
 		if (parents[vertex] == vertex) return vertex;
 		return GetParent(parents[vertex]);
@@ -386,5 +388,52 @@ public:
 		}
 
 		return edges;
+	};
+
+	int GetMinDistance(std::vector<int>& dest, std::vector<bool>& visited) {
+		int min = INT_MAX;
+		for (size_t i = 0; i < matrix.size(); i++) {
+			if (visited[i]) {
+				continue;
+			}
+
+			if (min == INT_MAX || dest[i] < dest[min]) {
+				min = i;
+			}
+		}
+
+		return min;
+	};
+	
+	std::vector<int> Dijkstra(int startVertex) {
+		startVertex--;
+		std::vector<int> ways = std::vector<int>(matrix.size());
+		std::vector<bool> visited = std::vector<bool>(matrix.size());
+		for (size_t i = 0; i < ways.size(); i++) {
+			ways[i] = INT_MAX;
+		}
+		ways[startVertex] = 0;
+
+		int min = 0;
+		for (size_t i = 0; i < ways.size(); i++) {
+			min = GetMinDistance(ways, visited);
+			visited[min] = true;
+			for (size_t j = 0; j < matrix.size(); j++) {
+				if (visited[j]) {
+					continue;
+				}
+
+				if (matrix[min][j] == 0) {
+					continue;
+				}
+
+				int weight = ways[min] + matrix[min][j];
+				if (weight < ways[j]) {
+					ways[j] = weight;
+				}
+			}
+		}
+
+		return ways;
 	};
 };

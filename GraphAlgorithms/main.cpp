@@ -97,4 +97,25 @@ int main() {
 	graph5.PrintEdges();
 	graph5.Kruskal();
 	graph5.Prim();
+	std::cout << '\n';
+
+	Graph graph6(std::vector<std::vector<int>> {
+		{ 0, 7, 9, 0, 0, 14 },
+		{ 7, 0, 10, 15, 0, 0 },
+		{ 9, 10, 0, 11, 0, 2 },
+		{ 0, 15, 11, 0, 6, 0 },
+		{ 0, 0, 0, 6, 0, 9 },
+		{ 14, 0, 2, 0, 9, 0 },
+	});
+	graph6.PrintEdges();
+	std::cout << "\nDijkstra's result: \n";
+	for (size_t i = 1; i <= graph6.Size(); i++) {
+		std::cout << "Vertex " << i << " : ";
+		std::vector<int> result = graph6.Dijkstra(i);
+		for (size_t j = 0; j < result.size(); j++) {
+			std::cout << result[j] << " ";
+		}
+		std::cout << '\n';
+	}
+	
 };
