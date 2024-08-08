@@ -135,7 +135,7 @@
 #include <iostream>
 
 class Node {
-	std::map<char, Node*> letters;
+	std::map<char, std::shared_ptr<Node>> letters;
 
 public:
 	bool is_end;
@@ -146,14 +146,14 @@ public:
 
 	Node() : is_end(false), value(0), size(0) {};
 
-	Node* Set(char ch) {
+	std::shared_ptr<Node> Set(char ch) {
 		if (letters.find(ch) == letters.end()) {
-			letters[ch] = new Node();
+			letters[ch] = std::make_shared<Node>();
 		}
 		return letters[ch];
 	};
 
-	Node* Get(char ch, bool& is_question_mark) {
+	std::shared_ptr<Node> Get(char ch) {
 		//if (letters.find(question_mark) == letters.end()) {
 		//	
 		//	return letters.find(ch) == letters.end() ? nullptr : letters[ch];
@@ -164,23 +164,22 @@ public:
 		return letters.find(ch) == letters.end() ? nullptr : letters[ch];
 	};
 
-	std::map<char, Node*> GetChildren() const {
+	std::map<char, std::shared_ptr<Node>> GetChildren() const {
 		return letters;
 	};
 };
 
 struct NodeComparer {
-	bool operator() (Node* const lhs, Node* const rhs) const
-	{
+	bool operator() (std::shared_ptr<Node> const lhs, std::shared_ptr<Node> const rhs) const {
 		return lhs->value < rhs->value;
 	}
 };
 
 class Trie {
-	Node* root;
+	std::shared_ptr<Node> root;
 
 	void Insert(const std::string& key, const int value, bool is_first_time) {
-		Node* node = root;
+		std::shared_ptr<Node> node = root;
 		for (size_t i = 0; i < key.size(); i++) {
 			node = node->Set(key[i]);
 		}
@@ -193,16 +192,34 @@ class Trie {
 		}
 	};
 
+	void DestroyRecursive(std::shared_ptr<Node> node) {
+		if (node != nullptr) {
+			if (node->GetChildren().size() == 0) {
+				node.reset();
+				node = nullptr;
+				return;
+			}
+
+			for (auto child : node->GetChildren()) {
+				DestroyRecursive(child.second);
+			}
+		}
+	};
+
 public:
 	Trie() {
-		root = new Node();
+		root = std::make_shared<Node>();
+	};
+
+	~Trie() {
+		DestroyRecursive(root);
 	};
 
 	void Insert(const std::string& key, const int value) {
 		Insert(key, value, true);
 	}
 
-	void IterateAsterix(std::set<Node*, NodeComparer>& ret, Node* node) {
+	void IterateAsterix(std::set<std::shared_ptr<Node>, NodeComparer>& ret, std::shared_ptr<Node> node) {
 		if (node == nullptr) {
 			return;
 		}
@@ -216,7 +233,7 @@ public:
 		}
 	};
 
-	void IterateQuestionMark(std::set<Node*, NodeComparer>& ret, Node* node) {
+	void IterateQuestionMark(std::set<std::shared_ptr<Node>, NodeComparer>& ret, std::shared_ptr<Node> node) {
 		if (node == nullptr) {
 			return;
 		}
@@ -230,26 +247,25 @@ public:
 		}
 	};
 
-	void StartsWith(const std::string& key, std::set<Node*, NodeComparer>& nodes, bool is_domain_mask) {
-		Node* node = root;
+	void StartsWith(const std::string& key, std::set<std::shared_ptr<Node>, NodeComparer>& nodes, bool is_domain_mask) {
+		std::shared_ptr<Node> node = root;
 		for (size_t i = 0; i < key.size(); i++) {
 			if (key[i] == '*') {
 				IterateAsterix(nodes, node);
 			}
 
-			bool is_question_mark = false;
-			node = node->Get(key[i], is_question_mark);
-			if (is_question_mark) {
+			if (key[i] == '?') {
 				IterateQuestionMark(nodes, node);
 			}
 
+			node = node->Get(key[i]);
 			if (node == nullptr) {
 				return;
 			}
 			bool shorter_than_test_dom_domain_mask = is_domain_mask && node->size < key.size(); // handle domain masks
 			bool has_asterix = key[i+1] == '*';
 			bool deal_with_asterix = ((has_asterix && node->size < key.size()) || (node->size > key.size() && !has_asterix));
-			if (node->is_end && (node->size >= key.size() || shorter_than_test_dom_domain_mask) && deal_with_asterix) {
+			if (node->is_end && (node->size >= key.size() || shorter_than_test_dom_domain_mask) /*&& deal_with_asterix*/) {
 				nodes.insert(node);
 			}
 		}
@@ -257,10 +273,22 @@ public:
 		return;
 	};
 
-	std::set<Node*, NodeComparer> Search(const std::string& key, bool is_domain_mask) {
-		std::set<Node*, NodeComparer> nodes;
+	std::set<std::shared_ptr<Node>, NodeComparer> Search(const std::string& key, bool is_domain_mask) {
+		std::set<std::shared_ptr<Node>, NodeComparer> nodes;
 		StartsWith(key, nodes, is_domain_mask);
 		StartsWith(key + ".*", nodes, is_domain_mask);
 		return nodes;
+	};
+
+	void Delete(const std::string& key, const bool is_domain_mask) {
+		auto nodes = Search(key, is_domain_mask);
+		if (nodes.empty()) {
+			return;
+		}
+
+		for (auto n : nodes) {
+			n->is_end = false;
+			n->value = 0;
+		}
 	};
 };
