@@ -154,6 +154,12 @@ public:
 	};
 
 	Node* Get(char ch, bool& is_question_mark) {
+		//if (letters.find(question_mark) == letters.end()) {
+		//	
+		//	return letters.find(ch) == letters.end() ? nullptr : letters[ch];
+		//}
+		//is_question_mark = true;
+		//return letters[question_mark];
 		//return letters.find(ch) == letters.end() ? letters.find(asterix) == letters.end() ? letters[asterix] : nullptr : letters[ch];
 		return letters.find(ch) == letters.end() ? nullptr : letters[ch];
 	};
@@ -161,17 +167,11 @@ public:
 	std::map<char, Node*> GetChildren() const {
 		return letters;
 	};
-
-	//~Node() {
-	//	for (auto l : letters) {
-	//		delete l.second;
-	//		l.second = nullptr;
-	//	}
-	//};
 };
 
-struct NodeCompare {
-	bool operator() (Node* const lhs, Node* const rhs) const {
+struct NodeComparer {
+	bool operator() (Node* const lhs, Node* const rhs) const
+	{
 		return lhs->value < rhs->value;
 	}
 };
@@ -188,22 +188,8 @@ class Trie {
 		node->value = value;
 		node->size = key.size();
 
-		//if (is_first_time) {
-		//	Insert(key + ".*", value, false);
-		//}
-	};
-
-	void DestroyRecursive(Node* node) {
-		if (node != nullptr) {
-			if (node->GetChildren().size() == 0) {
-				delete node;
-				node = nullptr;
-				return;
-			}
-
-			for (auto child : node->GetChildren()) {
-				DestroyRecursive(child.second);
-			}
+		if (is_first_time) {
+			Insert(key + ".*", value, false);
 		}
 	};
 
@@ -212,15 +198,11 @@ public:
 		root = new Node();
 	};
 
-	//~Trie() {
-	//	DestroyRecursive(root);
-	//};
-
 	void Insert(const std::string& key, const int value) {
 		Insert(key, value, true);
 	}
 
-	void IterateAsterix(std::set<Node*, NodeCompare>& ret, Node* node) {
+	void IterateAsterix(std::set<Node*, NodeComparer>& ret, Node* node) {
 		if (node == nullptr) {
 			return;
 		}
@@ -234,20 +216,32 @@ public:
 		}
 	};
 
-	void StartsWith(const std::string& key, std::set<Node*, NodeCompare>& nodes, bool is_domain_mask) {
+	void IterateQuestionMark(std::set<Node*, NodeComparer>& ret, Node* node) {
+		if (node == nullptr) {
+			return;
+		}
+
+		for (auto child : node->GetChildren()) {
+			if (child.second != nullptr && child.second->is_end) {
+				ret.insert(child.second);
+			}
+			node = child.second;
+			IterateQuestionMark(ret, node);
+		}
+	};
+
+	void StartsWith(const std::string& key, std::set<Node*, NodeComparer>& nodes, bool is_domain_mask) {
 		Node* node = root;
 		for (size_t i = 0; i < key.size(); i++) {
 			if (key[i] == '*') {
 				IterateAsterix(nodes, node);
 			}
 
-			//if (key[i] == '?') {
-			//	auto children = node->GetChildren();
-			//	for (auto ch : children) {
-			//		nodes.insert(ch.second);
-			//	}
-			//	continue;
-			//}
+			bool is_question_mark = false;
+			node = node->Get(key[i], is_question_mark);
+			if (is_question_mark) {
+				IterateQuestionMark(nodes, node);
+			}
 
 			if (node == nullptr) {
 				return;
@@ -263,22 +257,10 @@ public:
 		return;
 	};
 
-	std::set<Node*, NodeCompare> Search(const std::string& key, bool is_domain_mask) {
-		std::set<Node*, NodeCompare> nodes;
+	std::set<Node*, NodeComparer> Search(const std::string& key, bool is_domain_mask) {
+		std::set<Node*, NodeComparer> nodes;
 		StartsWith(key, nodes, is_domain_mask);
 		StartsWith(key + ".*", nodes, is_domain_mask);
 		return nodes;
 	};
-
-	void Delete(const std::string& key, bool is_domain_mask) {
-		auto nodes = Search(key, is_domain_mask);
-		if (nodes.empty()) {
-			return;
-		}
-
-		for (auto n : nodes) {
-			n->is_end = false;
-			n->value = 0;
-		}
-	}
 };
