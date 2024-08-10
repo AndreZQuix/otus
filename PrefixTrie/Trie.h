@@ -124,15 +124,20 @@ class Trie {
 				HandleAsterix(key_copy, nodes, node);
 			}
 
-			if (node == nullptr)
+			if (node == nullptr) {
 				continue;
-
+			}
 			node = node->Get(key_copy[i]);
+			if (node == nullptr) {
+				continue;
+			}
+
 			bool handle_asterix = true;
-			if (node != nullptr && key.size() > node->size && node->is_end) {
+			if (key.size() > node->size && node->is_end) {
 				handle_asterix *= key[node->size] == '*';
 			}
-			if (node != nullptr && node->is_end && handle_asterix) {
+
+			if (node->is_end && handle_asterix) {
 				nodes.insert(node);
 			}
 		}
