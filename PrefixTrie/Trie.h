@@ -161,7 +161,6 @@ public:
 	std::set<std::shared_ptr<Node>, NodeComparer> Search(const std::string& key) {
 		std::set<std::shared_ptr<Node>, NodeComparer> nodes;
 		StartsWith(key, nodes);
-		StartsWith(key + ".*", nodes);
 		return nodes;
 	};
 
