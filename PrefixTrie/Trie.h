@@ -51,10 +51,6 @@ class Trie {
 		node->is_end = true;
 		node->value = value;
 		node->size = key.size();
-
-		if (is_first_time) {
-			Insert(key + ".*", value, false);
-		}
 	};
 
 	void DestroyRecursive(std::shared_ptr<Node> node) {
@@ -71,18 +67,6 @@ class Trie {
 		}
 	};
 
-public:
-	Trie() {
-		root = std::make_shared<Node>();
-	};
-
-	~Trie() {
-		DestroyRecursive(root);
-	};
-
-	void Insert(const std::string& key, const int value) {
-		Insert(key, value, true);
-	}
 
 	void HandleQuestionMark(const std::string& key, size_t index, bool contains_asterix, std::set<std::shared_ptr<Node>, NodeComparer>& nodes, std::shared_ptr<Node> node) {
 		if (node == nullptr) {
@@ -111,7 +95,12 @@ public:
 
 		auto children = node->GetChildren();
 		for (auto ch : children) {
-			if (ch.second != nullptr && ch.second->is_end) {
+			bool handle_asterix = true;
+			if (node != nullptr && key.size() > node->size && node->is_end) {
+				handle_asterix *= key[key.size() - 1] == '*';
+			}
+
+			if (ch.second != nullptr && ch.second->is_end && handle_asterix) {
 				nodes.insert(ch.second);
 			}
 			node = ch.second;
@@ -119,7 +108,7 @@ public:
 		}
 	};
 
-	void StartsWith(const std::string& key, std::set<std::shared_ptr<Node>, NodeComparer>& nodes, bool is_domain_mask) {
+	void StartsWith(const std::string& key, std::set<std::shared_ptr<Node>, NodeComparer>& nodes) {
 		auto key_copy = key;
 		std::shared_ptr<Node> node = root;
 		bool contains_asterix = key_copy.find_first_of('*') != std::string::npos;
@@ -133,14 +122,17 @@ public:
 				auto asterix_loc = key_copy.find_first_of('*');
 				key_copy = key_copy.substr(0, asterix_loc + 1);
 				HandleAsterix(key_copy, nodes, node);
-				continue;
 			}
 
 			if (node == nullptr)
 				continue;
 
 			node = node->Get(key_copy[i]);
-			if (node != nullptr && node->is_end) {
+			bool handle_asterix = true;
+			if (node != nullptr && key.size() > node->size && node->is_end) {
+				handle_asterix *= key[node->size] == '*';
+			}
+			if (node != nullptr && node->is_end && handle_asterix) {
 				nodes.insert(node);
 			}
 		}
@@ -148,15 +140,28 @@ public:
 		return;
 	};
 
-	std::set<std::shared_ptr<Node>, NodeComparer> Search(const std::string& key, bool is_domain_mask) {
+public:
+	Trie() {
+		root = std::make_shared<Node>();
+	};
+
+	~Trie() {
+		DestroyRecursive(root);
+	};
+
+	void Insert(const std::string& key, const int value) {
+		Insert(key, value, true);
+	}
+
+	std::set<std::shared_ptr<Node>, NodeComparer> Search(const std::string& key) {
 		std::set<std::shared_ptr<Node>, NodeComparer> nodes;
-		StartsWith(key, nodes, is_domain_mask);
-		//StartsWith(key + ".*", nodes, is_domain_mask);
+		StartsWith(key, nodes);
+		StartsWith(key + ".*", nodes);
 		return nodes;
 	};
 
-	void Delete(const std::string& key, const bool is_domain_mask) {
-		auto nodes = Search(key, is_domain_mask);
+	void Delete(const std::string& key) {
+		auto nodes = Search(key);
 		if (nodes.empty()) {
 			return;
 		}

@@ -32,7 +32,7 @@ int main() {
 	std::vector<std::string> urls = { "ur.lleh.sw?n", "ten.swen", "ur.olleh", "moc.yek.olleh", "moc.y??", "ur.ll*", "ur.ll*h.s?en", "moc.yek", "ur.lleh.swen", "ur.lleh",
 		"ur.lleh.swen.tset.hello.???", "ur.lleh.swen.tset", "ef*ac", "????", "?????", "ef?.???"};
 	for (size_t i = 0; i < urls.size(); i++) {
-		auto nodes = trie.Search(urls[i], true);
+		auto nodes = trie.Search(urls[i]);
 		if (nodes.empty()) {
 			std::cout << urls[i] << " --- \n";
 		}
