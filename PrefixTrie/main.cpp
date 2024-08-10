@@ -6,16 +6,7 @@
 #include <algorithm>
 #include <cctype>
 
- //hello.key.com -> key.com, bye.hello.key.com, hello.key.com
- //if asterix -> trim until last asterix: *.hello.*ey.com -> ey.com
- //question mark -> ignore
-
- //прогонять алгоритм несколько раз для макс.матчинга
- //ТОЛЬКО доменные маски матчатся на более короткие тестовые домены
- //url hell.ru dom news.hell.ru - no
- //url news.hell.ru dom hell.ru - yes
-
-int main() {
+ int main() {
 	Trie trie;
 	std::map<std::string, int> domains = { {"moc.yss", 11}, {"moc.yek.olleh", 13},
 		{"ur.olleh", 123}, {"ten.swen", 55}, {"ur.ll", 34}, {"efac", 42} };
